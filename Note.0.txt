@@ -1,0 +1,26 @@
+IA Generative :
+
+
+word embedding (deep Learning) : embedding dimentionnelle (tailles des vocabulaire)
+ tensorflow
+ 
+
+Prototype :  input( ex : image ) -> Convolution + Relu -> pooling -> (convolution * relu ) -> pooling ->(FEATURE LEARNING)  ->
+Flatten -> Fully Connected Softmax (CLASSIFICATION )
+
+fonction de transformations  
+
+Cnn modele (compression + Feature Extraction)  -> ANN (Classification)
+
+Convolution + relu (matrice 3 x 3)
+
+Tensore (3 dimention) -> matrice -> vecteur 
+
+Discriminator (analyser pour connaitre le vraie ou faut image)
+
+Algorithm : autoencoder ( image d'origine ) -> compresser -> encoder -> decoder (recreate image)
+
+ 
+
+
+

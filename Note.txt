@@ -1,0 +1,36 @@
+ """
+        TP 2 : classification de texte avec sklearn
+
+Objectif :
+    - Apprendre à utiliser le module sklearn (apprentissage supervisé).
+    - Apprendre à utiliser les outils de prétraitement de texte (tokenization, vectorisation).
+    - Réaliser une classification de texte (spam/pas spam).
+
+Partie 1 : Comprendre et préparer les données
+
+1) Regardez le jeu de données `data/spam.csv`.
+   Quels sont les champs utilisés ? Quelle est la variable cible ?
+
+2) Chargez `data/spam.csv` dans un DataFrame pandas.
+
+3) Séparez les données en deux ensembles :
+   - Ensemble d'entraînement (`train`, 80% des données)
+   - Ensemble de test (`test`, 20% des données)
+   
+   Pensez à utiliser la fonction `train_test_split` du module `sklearn.model_selection`.
+   Utilisez le paramètre `random_state=42` pour que vos résultats soient reproductibles.
+
+4) Visualisez la répartition des classes (spam/ham) dans les deux ensembles.
+   Y a-t-il un déséquilibre de classes ?
+   Est-il important ?
+
+5) Décrivez la démarche à suivre pour classifier du texte.
+
+6) Quelles sont les étapes de prétraitement des données textuelles ?
+
+7) Quelles transformations appliquerez-vous sur les données textuelles ?
+   Justifiez vos choix.
+
+8) Comment allez-vous transformer ces données pour les utiliser avec un modèle de Machine Learning ?
+   Expliquez comment fonctionne le sac de mots (Bag of Words) et le TF-IDF.
+"""
