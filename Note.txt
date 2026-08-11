@@ -34,3 +34,4 @@ Partie 1 : Comprendre et préparer les données
 8) Comment allez-vous transformer ces données pour les utiliser avec un modèle de Machine Learning ?
    Expliquez comment fonctionne le sac de mots (Bag of Words) et le TF-IDF.
 """
+
