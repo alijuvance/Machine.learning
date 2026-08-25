@@ -1,0 +1,66 @@
+# Benchmark Configuration - Synthara
+# Parameters for ML model training and TSTR evaluation
+
+benchmark:
+  random_seed: 42
+  test_size: 0.2          # 20% of real data held out for testing
+  cv_folds: 5             # Cross-validation folds
+  scoring_metric: "roc_auc"
+
+models:
+  xgboost:
+    n_estimators: 200
+    max_depth: 6
+    learning_rate: 0.1
+    scale_pos_weight: "auto"  # Auto-computed from class imbalance
+    eval_metric: "logloss"
+    use_label_encoder: false
+
+  random_forest:
+    n_estimators: 200
+    max_depth: 10
+    class_weight: "balanced"
+    n_jobs: -1
+
+  logistic_regression:
+    max_iter: 1000
+    class_weight: "balanced"
+    solver: "lbfgs"
+
+# Evaluation metrics to report
+metrics:
+  - "roc_auc"
+  - "f1"
+  - "precision"
+  - "recall"
+  - "accuracy"
+
+# TSTR Pipeline Configuration
+tstr:
+  scenarios:
+    - name: "Real only"
+      train_on: "real"
+      test_on: "real"
+    - name: "Synthetic only"
+      train_on: "synthetic"
+      test_on: "real"
+    - name: "Augmented (Real + Synthetic)"
+      train_on: "augmented"
+      test_on: "real"
+      augmentation_ratio: 1.0  # 1:1 ratio of real:synthetic
+
+# Fraud Detection specifics
+fraud_detection:
+  target_column: "isFraud"
+  drop_columns:
+    - "nameOrig"
+    - "nameDest"
+    - "isFlaggedFraud"
+  encode_columns:
+    - "type"
+
+# Credit Scoring specifics (Phase 2)
+credit_scoring:
+  target_column: "default"
+  drop_columns: []
+  encode_columns: []
