@@ -21,6 +21,7 @@ data/generated/*.csv
 data/generated/*.parquet
 data/reports/*.html
 data/reports/*.json
+data/reports/*.png
 
 # Jupyter checkpoints
 .ipynb_checkpoints/
