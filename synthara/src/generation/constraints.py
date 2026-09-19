@@ -23,7 +23,7 @@ class AfricanFinanceConstraints:
     2. Amount bounds: within realistic ranges per transaction type
     3. Transaction type validity: only allowed types
     4. Fraud consistency: fraud only on TRANSFER and CASH_OUT (PaySim pattern)
-    5. Seasonal modulation: adjust volumes based on harvest/lean periods
+    5. Credit limits: positive loan amounts, incomes, interest rates, age bounds
     """
 
     # Typical amount ranges per transaction type in mobile money (in local currency units)
@@ -69,6 +69,7 @@ class AfricanFinanceConstraints:
         df = self._enforce_balance_consistency(df)
         df = self._enforce_fraud_consistency(df)
         df = self._enforce_non_negative_balances(df)
+        df = self._enforce_credit_bounds(df)
 
         removed = original_len - len(df)
         if removed > 0:
@@ -162,6 +163,23 @@ class AfricanFinanceConstraints:
             if col in df.columns:
                 df[col] = df[col].clip(lower=0)
 
+        return df
+
+    def _enforce_credit_bounds(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Enforce realistic bounds for credit scoring columns."""
+        df = df.copy()
+        if "age" in df.columns:
+            df["age"] = df["age"].clip(lower=18, upper=90)
+        
+        pos_cols = ["loan_amount", "monthly_income", "momo_active_months", 
+                    "momo_monthly_tx_volume", "interest_rate"]
+        for col in pos_cols:
+            if col in df.columns:
+                df[col] = df[col].clip(lower=0)
+                
+        if "loan_term_months" in df.columns:
+            df["loan_term_months"] = df["loan_term_months"].clip(lower=1)
+            
         return df
 
     def validate(self, df: pd.DataFrame) -> dict:

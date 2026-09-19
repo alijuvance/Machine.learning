@@ -43,6 +43,7 @@ def run_pipeline(
     model_name: str = "ctgan",
     num_rows: int = 10000,
     nrows_load: int = None,
+    target_column: str = "isFraud",
 ):
     """
     Run the complete Synthara pipeline.
@@ -52,6 +53,7 @@ def run_pipeline(
         model_name: SDV model to use (ctgan, gaussian_copula, tvae).
         num_rows: Number of synthetic rows to generate.
         nrows_load: Max rows to load from source (for large files).
+        target_column: Target column for TSTR benchmark.
     """
     pipeline_start = time.time()
 
@@ -145,11 +147,10 @@ def run_pipeline(
     # ----------------------------------------------------------------
     logger.info("\n🏆 STEP 6: Running TSTR benchmark...")
 
-    # Re-add dummy ID columns for benchmark (it will drop them anyway)
     benchmark = TSTRBenchmark(
-        target_column="isFraud",
-        drop_columns=["isFlaggedFraud"],
-        encode_columns=["type"],
+        target_column=target_column,
+        drop_columns=None,  # Handled automatically in prepare_features
+        encode_columns=None, # Handled automatically in prepare_features
     )
     benchmark_results = benchmark.run(gen_df, synthetic_df)
 
@@ -199,6 +200,7 @@ if __name__ == "__main__":
     parser.add_argument("--model", default="ctgan", choices=["ctgan", "gaussian_copula", "tvae"])
     parser.add_argument("--num-rows", type=int, default=10000, help="Number of synthetic rows")
     parser.add_argument("--nrows", type=int, default=None, help="Max source rows to load")
+    parser.add_argument("--target", default="isFraud", help="Target column for TSTR benchmark")
 
     args = parser.parse_args()
 
@@ -207,4 +209,5 @@ if __name__ == "__main__":
         model_name=args.model,
         num_rows=args.num_rows,
         nrows_load=args.nrows,
+        target_column=args.target,
     )

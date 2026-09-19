@@ -119,13 +119,12 @@ def prepare_features(
     Returns:
         Tuple of (features DataFrame, target Series).
     """
-    if drop_columns is None:
-        drop_columns = ["nameOrig", "nameDest", "isFlaggedFraud"]
-    if encode_columns is None:
-        encode_columns = ["type"]
-
     df = df.copy()
 
+    # Default heuristic for dropping IDs
+    if drop_columns is None:
+        drop_columns = ["nameOrig", "nameDest", "isFlaggedFraud", "client_id"]
+        
     # Extract target
     if target_column not in df.columns:
         raise ValueError(f"Target column '{target_column}' not found in DataFrame")
@@ -134,6 +133,10 @@ def prepare_features(
     # Drop target and irrelevant columns
     cols_to_drop = [c for c in [target_column] + drop_columns if c in df.columns]
     X = df.drop(columns=cols_to_drop)
+
+    # Automatically detect categorical columns to encode if not provided
+    if encode_columns is None:
+        encode_columns = X.select_dtypes(include=['object', 'category']).columns.tolist()
 
     # Encode categorical columns
     for col in encode_columns:
